@@ -51,10 +51,10 @@ public class HazelcastExecutorController {
     }
 
     @RequestMapping(value = "/sum/{count}", method = RequestMethod.GET)
-    ResponseEntity<String> average(@PathVariable int count) throws InterruptedException, ExecutionException {
-        IMap<String, Double> cache = this.hazelcastInstance.getMap("averageDistributedCache");
+    ResponseEntity<String> sum(@PathVariable int count) throws InterruptedException, ExecutionException {
+        IMap<String, Double> cache = this.hazelcastInstance.getMap("sumDistributedCache");
         cache.destroy();
-        cache = this.hazelcastInstance.getMap("averageDistributedCache");
+        cache = this.hazelcastInstance.getMap("sumDistributedCache");
 
         for (int i = 0; i < count; i++) {
             cache.put(UUID.randomUUID().toString(), random.nextDouble() * random.nextInt(10));

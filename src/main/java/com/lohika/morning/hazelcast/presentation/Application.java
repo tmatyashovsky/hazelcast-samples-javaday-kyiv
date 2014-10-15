@@ -37,17 +37,12 @@ public class Application {
         Config hazelcastConfig = new Config("hazelcastPresentation");
 
         configureNetwork(hazelcastConfig);
-
         configureLogging(hazelcastConfig);
-
         configureJmxSupport(hazelcastConfig);
-
         configureManagementCenter(hazelcastConfig);
 
         configureDistributedCache(hazelcastConfig);
-
         configureWriteThroughDistributedCache(hazelcastConfig);
-
         configureExecutorService(hazelcastConfig);
 
         return Hazelcast.newHazelcastInstance(hazelcastConfig);
