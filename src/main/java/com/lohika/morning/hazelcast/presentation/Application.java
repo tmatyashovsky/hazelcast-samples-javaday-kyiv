@@ -88,7 +88,7 @@ public class Application {
 
     private void configureExecutorService(Config hazelcastConfig) {
         ExecutorConfig executorConfig = new ExecutorConfig("executorServiceConfig");
-        executorConfig.setPoolSize(1);
+        executorConfig.setPoolSize(5);
         hazelcastConfig.getExecutorConfigs().put("executorServiceConfig", executorConfig);
     }
 

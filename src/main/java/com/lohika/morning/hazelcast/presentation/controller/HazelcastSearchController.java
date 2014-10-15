@@ -32,12 +32,17 @@ public class HazelcastSearchController {
         IMap<String, Person> persons = hazelcastInstance.getMap("personsMap");
 
         persons.put("taras", new Person("matyashovsky"));
+        persons.put("izzet", new Person("mustafaiev"));
         persons.put("vladimir", new Person("tsukur"));
-        persons.put("mikalai", new Person("alimenkou"));
         persons.put("oleg", new Person("tsal-tsalko"));
+        persons.put("mikalai", new Person("alimenkou"));
         persons.put("baruch", new Person("sadogursky"));
+        persons.put("anatoliy", new Person("sokolenko"));
         persons.put("evgeny", new Person("borisov"));
         persons.put("tomasz", new Person("borek"));
+        persons.put("andriy", new Person("rodionov"));
+        persons.put("nikolas", new Person("frankel"));
+        persons.put("alexey", new Person("tokar"));
 
         return new ResponseEntity<String>(HttpStatus.CREATED);
     }

@@ -12,6 +12,7 @@ import com.hazelcast.core.IExecutorService;
 import com.hazelcast.core.IMap;
 import com.hazelcast.core.MultiExecutionCallback;
 
+import com.lohika.morning.hazelcast.presentation.task.HazelcastSumTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.lohika.morning.hazelcast.presentation.task.HazelcastAverageTask;
 import com.lohika.morning.hazelcast.presentation.task.HazelcastSimpleTask;
 
 /**
@@ -50,7 +50,7 @@ public class HazelcastExecutorController {
         return new ResponseEntity<String>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/average/{count}", method = RequestMethod.GET)
+    @RequestMapping(value = "/sum/{count}", method = RequestMethod.GET)
     ResponseEntity<String> average(@PathVariable int count) throws InterruptedException, ExecutionException {
         IMap<String, Double> cache = this.hazelcastInstance.getMap("averageDistributedCache");
         cache.destroy();
@@ -80,7 +80,7 @@ public class HazelcastExecutorController {
                         sum += (Double) entry.getValue();
                     }
 
-                    logger.info("Final result is {}", sum / values.size());
+                    logger.info("Final result is {}", sum);
 
                     long stopTime = System.currentTimeMillis();
                     long elapsedTime = stopTime - startTime;
@@ -89,7 +89,7 @@ public class HazelcastExecutorController {
                 }
             };
 
-        this.executorService.submitToAllMembers(new HazelcastAverageTask(), callback);
+        this.executorService.submitToAllMembers(new HazelcastSumTask(), callback);
 
         return new ResponseEntity<String>(HttpStatus.OK);
     }
