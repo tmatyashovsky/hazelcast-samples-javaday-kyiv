@@ -27,7 +27,7 @@ public class HazelcastSumTask implements Callable<Double>, Serializable, Hazelca
 
     @Override
     public Double call() throws Exception {
-        IMap<String, Double> map = this.hazelcastInstance.getMap("averageDistributedCache");
+        IMap<String, Double> map = this.hazelcastInstance.getMap("sumDistributedCache");
 
         double sum = 0;
 

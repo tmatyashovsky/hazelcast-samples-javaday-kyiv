@@ -12,7 +12,6 @@ import com.hazelcast.core.IExecutorService;
 import com.hazelcast.core.IMap;
 import com.hazelcast.core.MultiExecutionCallback;
 
-import com.lohika.morning.hazelcast.presentation.task.HazelcastSumTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.lohika.morning.hazelcast.presentation.task.HazelcastSimpleTask;
+import com.lohika.morning.hazelcast.presentation.task.HazelcastSumTask;
 
 /**
  * Controller that handles requests related to Hazelcast demo as in-memory data grid.
