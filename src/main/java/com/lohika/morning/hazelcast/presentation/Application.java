@@ -34,7 +34,7 @@ public class Application {
 
     @Bean
     public HazelcastInstance hazelcastInstance() {
-        Config hazelcastConfig = new Config("hazelcastPresentation");
+        Config hazelcastConfig = new Config("HazelcastPresentation");
 
         configureNetwork(hazelcastConfig);
         configureLogging(hazelcastConfig);
@@ -76,7 +76,7 @@ public class Application {
 
     private void configureDistributedCache(Config hazelcastConfig) {
         MapConfig distributedCacheConfig = new MapConfig("distributedCacheConfig");
-        distributedCacheConfig.setBackupCount(0).setTimeToLiveSeconds(600);
+        distributedCacheConfig.setBackupCount(1).setTimeToLiveSeconds(600);
 
         hazelcastConfig.addMapConfig(distributedCacheConfig);
     }

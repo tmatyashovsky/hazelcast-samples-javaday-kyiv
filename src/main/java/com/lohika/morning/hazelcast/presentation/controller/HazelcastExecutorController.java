@@ -7,10 +7,7 @@ import java.util.concurrent.*;
 
 import javax.annotation.Resource;
 
-import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IExecutorService;
-import com.hazelcast.core.IMap;
-import com.hazelcast.core.MultiExecutionCallback;
+import com.hazelcast.core.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,36 +59,39 @@ public class HazelcastExecutorController {
 
         final long startTime = System.currentTimeMillis();
 
-        MultiExecutionCallback callback =
-            new MultiExecutionCallback() {
-
-                @Override
-                public void onResponse(com.hazelcast.core.Member member, Object value) {
-                    logger.info("Member {} has responded with the result {}", member, value);
-                }
-
-                @Override
-                public void onComplete(Map<com.hazelcast.core.Member, Object> values) {
-                    logger.info("All members have responded with the results, calculating ...");
-
-                    double sum = 0;
-
-                    for (Map.Entry<com.hazelcast.core.Member, Object> entry : values.entrySet()) {
-                        sum += (Double) entry.getValue();
-                    }
-
-                    logger.info("Final result is {}", sum);
-
-                    long stopTime = System.currentTimeMillis();
-                    long elapsedTime = stopTime - startTime;
-
-                    logger.info("Elapsed time with {} member(s) is {} ms", values.size(), elapsedTime);
-                }
-            };
+        MultiExecutionCallback callback = createExecutionCallback(startTime);
 
         this.executorService.submitToAllMembers(new HazelcastSumTask(), callback);
 
         return new ResponseEntity<String>(HttpStatus.OK);
+    }
+
+    private MultiExecutionCallback createExecutionCallback(final long startTime) {
+        return new MultiExecutionCallback() {
+
+            @Override
+            public void onResponse(com.hazelcast.core.Member member, Object value) {
+                logger.info("Member {} has responded with the result {}", member, value);
+            }
+
+            @Override
+            public void onComplete(Map<Member, Object> values) {
+                logger.info("All members have responded with the results, calculating ...");
+
+                double sum = 0;
+
+                for (Map.Entry<Member, Object> entry : values.entrySet()) {
+                    sum += (Double) entry.getValue();
+                }
+
+                logger.info("Final result is {}", sum);
+
+                long stopTime = System.currentTimeMillis();
+                long elapsedTime = stopTime - startTime;
+
+                logger.info("Elapsed time with {} member(s) is {} ms", values.size(), elapsedTime);
+            }
+        };
     }
 
 }
