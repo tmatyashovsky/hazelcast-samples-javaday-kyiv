@@ -90,7 +90,7 @@ public class Application {
     private void configureWriteThroughDistributedCache(Config hazelcastConfig) {
         // Hazelcast write-through distributed cache config.
         MapConfig writeThroughDistributedCacheConfig = new MapConfig("writeThroughDistributedCacheConfig");
-        writeThroughDistributedCacheConfig.setBackupCount(0);
+        writeThroughDistributedCacheConfig.setBackupCount(1);
         MapStoreConfig mapStoreConfig = new MapStoreConfig();
         mapStoreConfig.setEnabled(true)
                       .setClassName("com.lohika.morning.hazelcast.presentation.cache.store.HazelcastMapStore")
