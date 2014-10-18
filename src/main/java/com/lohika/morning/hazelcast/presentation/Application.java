@@ -40,6 +40,7 @@ public class Application {
         configureLogging(hazelcastConfig);
         configureJmxSupport(hazelcastConfig);
         configureManagementCenter(hazelcastConfig);
+        configureGroupConfig(hazelcastConfig);
 
         configureDistributedCache(hazelcastConfig);
         configureWriteThroughDistributedCache(hazelcastConfig);
@@ -120,6 +121,11 @@ public class Application {
 
     private void configureLogging(Config hazelcastConfig) {
         hazelcastConfig.getProperties().put("hazelcast.logging.type", "sl4j");
+    }
+
+    private void configureGroupConfig(Config hazelcastConfig) {
+        hazelcastConfig.getGroupConfig().setName("ClusterName");
+        hazelcastConfig.getGroupConfig().setPassword("ClusterPassword");
     }
 
 }

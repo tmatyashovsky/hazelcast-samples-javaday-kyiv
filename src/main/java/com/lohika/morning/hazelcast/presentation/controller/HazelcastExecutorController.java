@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 
 import com.hazelcast.core.*;
 
+import com.hazelcast.map.EntryProcessor;
+import com.lohika.morning.hazelcast.presentation.cache.processor.UpdateEntryProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,6 +94,22 @@ public class HazelcastExecutorController {
                 logger.info("Elapsed time with {} member(s) is {} ms", values.size(), elapsedTime);
             }
         };
+    }
+
+    @RequestMapping(value = "/process/{count}", method = RequestMethod.GET)
+    ResponseEntity<String> updateViaEntryProcessor(@PathVariable int count) throws InterruptedException, ExecutionException {
+        IMap<String, Double> cache = this.hazelcastInstance.getMap("updateDistributedCache");
+        cache.destroy();
+        cache = this.hazelcastInstance.getMap("updateDistributedCache");
+
+        for (int i = 0; i < count; i++) {
+            cache.put(UUID.randomUUID().toString(), random.nextDouble() * random.nextInt(100));
+        }
+
+        EntryProcessor entryProcessor = new UpdateEntryProcessor();
+        cache.executeOnEntries(entryProcessor);
+
+        return new ResponseEntity<String>(HttpStatus.OK);
     }
 
 }
